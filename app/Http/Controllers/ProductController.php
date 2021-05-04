@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Jobs\ProductLiked;
 use App\Models\ProductUser;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,13 +21,17 @@ class ProductController extends Controller
         $user= $response->json();
 
         try{
-            ProductUser::create([
+           $productUser= ProductUser::create([
                 'user_id'=>$user['id'],
                 'product_id'=>$id
             ]);
+
+            ProductLiked::dispatch($productUser->toArray());
+
             return response([
                 'message'=>'sucess'
             ]);
+
         }catch(\Exception $exception){
             return response([
                 'error'=>'you already like this product'
