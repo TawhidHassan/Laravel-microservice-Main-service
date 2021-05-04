@@ -16,3 +16,4 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::apiResource('/products',ProductController::class);
+Route::post('/products/{id}/like',[ProductController::class,'like']);
